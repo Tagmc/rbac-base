@@ -13,7 +13,7 @@ const MOCK_DATABASE = {
     ID: 'EmHuyTapCode-sample-id-12345678',
     EMAIL: 'emhuytapcode@gmail.com',
     PASSWORD: 'EmHuyTapCode@123',
-    ROLE: MOCK_ROLES.CLIENT
+    ROLE: MOCK_ROLES.MODERATOR
   }
 }
 

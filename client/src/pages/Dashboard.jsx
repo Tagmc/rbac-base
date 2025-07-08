@@ -14,20 +14,27 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Tab from "@mui/material/Tab";
+import { userPermission } from "~/hooks/usePermission";
+import { permissions } from "~/config/rbacConfig";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { hasPermission } = userPermission(user?.role)
 
   // Function  đơn giản có nhiệm vụ lấy ra các giá trị tab dựa theo url sau khi refresh trang
   const getDefaultActivetab = () => {
     let activeTab = "dashboard";
-    TAB_URLS.forEach((tab) => {
+    const allowedTabs = TAB_URLS.filter(tab => hasPermission(tab.permission));
+    allowedTabs.forEach((tab) => {
       if (location.pathname.includes(tab.value)) activeTab = tab.value;
     });
     return activeTab;
   };
+
+  // Filter tabs dựa trên quyền của user
+  const allowedTabs = TAB_URLS.filter(tab => hasPermission(tab.permission));
   const [tab, setTab] = useState(getDefaultActivetab());
   const handleChange = (event, newTab) => {
     setTab(newTab);
@@ -131,12 +138,27 @@ function Dashboard() {
         </Typography>
       </Alert>
 
+      {/* Hiển thị thông tin về quyền truy cập */}
+      {TAB_URLS.length !== allowedTabs.length && (
+        <Alert
+          severity="warning"
+          variant="outlined"
+          sx={{
+            ".MuiAlert-message": { overflow: "hidden" },
+            width: { md: "max-content" },
+            marginTop: "8px",
+          }}
+        >
+          Một số tính năng bị hạn chế do quyền truy cập. Bạn có thể truy cập: {allowedTabs.length}/{TAB_URLS.length} tính năng.
+        </Alert>
+      )}
+
       {/* Phân quyền truy cập. Sử dụng MUI tabs cho đơn giản để test các trang khác nhau. */}
       <Box sx={{ width: "100%", typography: "body1" }}>
         <TabContext value={tab}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
-              {TAB_URLS.map((item) => (
+              {allowedTabs.map((item) => (
                 <Tab
                   key={item.value}
                   label={item.name}
@@ -147,7 +169,7 @@ function Dashboard() {
               ))}
             </TabList>
           </Box>
-          {TAB_URLS.map((item) => (
+          {allowedTabs.map((item) => (
             <TabPanel key={item.value} value={item.value}>
               <Alert severity="success" sx={{ width: "max-content" }}>
                 Nội dung trang {item.name}
