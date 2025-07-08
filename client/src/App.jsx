@@ -3,6 +3,9 @@ import Login from "~/pages/Login";
 import Dashboard from "~/pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import AccessDenied from "./pages/AccessDenied";
+import RbacRoute from "./components/core/RbacRoute";
+import { permissions } from "./config/rbacConfig";
+import { TAB_URLS } from "./utils/constants";
 
 /**
  * Giải pháp clean code trong việc xác định các route nào cần đăng nhập tài khoản xong thì mới cho truy cập
@@ -31,11 +34,24 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Route>
       <Route element={<ProtectedRoutes />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/messages" element={<Dashboard />} />
-        <Route path="/revenue" element={<Dashboard />} />
-        <Route path="/support" element={<Dashboard />} />
-        <Route path="/admin-tools" element={<Dashboard />} />
+        {/* v6.x.x trở lên */}
+        {TAB_URLS.map((item) => 
+        <Route
+          element={
+            <RbacRoute requiredPermission={item.permission} />
+          }
+        >
+          <Route path={item.route} element={<Dashboard />} />
+        </Route>)}
+        {/* v5.x.x trở xuồng */}
+        {/* <Route
+          path="/dashboard"
+          element={
+            <RbacRoute requiredPermission={permissions.VIEW_DASHBOARD}>
+              <Dashboard />
+            </RbacRoute>
+          }
+        /> */}
       </Route>
       <Route path="/access-denied" element={<AccessDenied />}></Route>
       <Route path="*" element={<NotFound />}></Route>

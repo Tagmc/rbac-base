@@ -13,7 +13,7 @@ const MOCK_DATABASE = {
     ID: 'EmHuyTapCode-sample-id-12345678',
     EMAIL: 'emhuytapcode@gmail.com',
     PASSWORD: 'EmHuyTapCode@123',
-    ROLE: MOCK_ROLES.MODERATOR
+    ROLE: MOCK_ROLES.CLIENT
   }
 }
 
@@ -29,7 +29,7 @@ const login = async (req, res) => {
     }
 
     // Trường hợp nhập đúng thông tin tài khoản, tạo token và trả về cho phía Client
-    //Tạo thông tin payload để đính kèm trong JWT token
+    //Tạo thông tin payload để đính kèm trong JWT token
     const userInfo = {
       id: MOCK_DATABASE.USER.ID,
       email: MOCK_DATABASE.USER.EMAIL,
@@ -42,7 +42,7 @@ const login = async (req, res) => {
     /**
      * Xử lý trường hợp trả về http only cookie cho phía trình duyệt
      * Về cái maxAge và thự viện ms: https://expressjs.com/en/api.html
-     * Đối với các maxAge - thời gian sống của cookie thì chúng ta sẽ để tối đa 14 ngày. thời gian sống cookie != thời gian sống token
+     * Đối với các maxAge - thời gian sống của cookie thì chúng ta sẽ để tối đa 14 ngày. thời gian sống cookie != thời gian sống token
     */
     console.log(accessToken)
     res.cookie('accessToken', accessToken, {
