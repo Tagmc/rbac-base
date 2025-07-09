@@ -25,7 +25,7 @@ const isAuthorized = async (req, res, next) => {
         ACCESS_TOKEN_SECRET_SIGNATURE)
     // Bước 2: Quan trọng: nếu như cái token hợp lệ, thì sẽ cần phải lưu thông tin giải mã được vào cái req.jwtDecoded, để xử dụng cho các tầng cần xử lý tiếp, co id, email
     req.jwtDecoded = accessTokenDecoded
-    // Bước 3: next request
+    // Bước 3: next request
     next()
   } catch (error) {
     console.log('Error from middleware', error)
@@ -36,7 +36,7 @@ const isAuthorized = async (req, res, next) => {
     }
 
     // Trường hợp lỗi 02: Nếu như cái accessToken nó không hợp lệ do bất kì trường hợp nào khác thì cứ trả về 401
-    res.status(StatusCodes.UNAUTHORIZED).json({message: 'Unauthorized! Please Login'})
+    res.status(StatusCodes.UNAUTHORIZED).json({message: 'Unauthorized! Please Login'})
   }
 };
 
