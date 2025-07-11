@@ -6,12 +6,13 @@ import {
   REFRESH_TOKEN_SECRET_SIGNATURE,
 } from "~/providers/JwtProvider";
 import { MOCK_USER_LEVEL_1 } from "~/models/mock_database_level_1";
+import { MOCK_USER_LEVEL_2 } from "~/models/mock_database_level_2";
 
 const login = async (req, res) => {
   try {
     if (
-      req.body.email !== MOCK_USER_LEVEL_1.EMAIL ||
-      req.body.password !== MOCK_USER_LEVEL_1.PASSWORD
+      req.body.email !== MOCK_USER_LEVEL_2.EMAIL ||
+      req.body.password !== MOCK_USER_LEVEL_2.PASSWORD
     ) {
       res
         .status(StatusCodes.FORBIDDEN)
@@ -22,9 +23,10 @@ const login = async (req, res) => {
     // Trường hợp nhập đúng thông tin tài khoản, tạo token và trả về cho phía Client
     //Tạo thông tin payload để đính kèm trong JWT token
     const userInfo = {
-      id: MOCK_USER_LEVEL_1.ID,
-      email: MOCK_USER_LEVEL_1.EMAIL,
-      role: MOCK_USER_LEVEL_1.ROLE,
+      id: MOCK_USER_LEVEL_2.ID,
+      email: MOCK_USER_LEVEL_2.EMAIL,
+      // role: MOCK_USER_LEVEL_1.ROLE,
+      role: MOCK_USER_LEVEL_2.ROLE
     };
 
     // Tạo 2 loại token
