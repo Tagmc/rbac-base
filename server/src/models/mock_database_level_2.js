@@ -31,7 +31,7 @@ export const MOCK_ROLES_LEVEL_2 = [
         ]
     },
     {
-        _id: 'role-moderator-sample-id-12345678',
+        _id: 'role-admin-sample-id-12345678',
         name: 'admin',
         permissions: [
             // supports
